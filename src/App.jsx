@@ -1,109 +1,85 @@
-// src/App.jsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import './App.css';
+import { AuthProvider } from './contexts/AuthContext';
+import { WalletProvider } from './contexts/Walletcontext';
 
-// Pages
-import LandingPage from './pages/LandingPage';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import ProfileSetup from './pages/ProfileSetup';
-import Applications from './pages/Applications';
-import Interviews from './pages/Interviews';
-import Settings from './pages/Settings';
+// Auth Pages
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Onboarding from './components/auth/Onboarding';
 
-// Components
-import Navbar from './components/Navbar';
-import ProtectedRoute from './components/ProtectedRoute';
+// Dashboard Pages
+import Dashboard from './components/dashboard/Dashboard';
+import JobMatches from './components/jobs/JobMatches';
+import Applications from './components/applications/Applications';
+import ApplicationDetail from './components/applications/ApplicationDetail';
+import Interviews from './components/interviews/Interviews';
+import Profile from './components/profile/Profile';
+import Verification from './components/profile/Verification';
 
-// Context
-import { AuthProvider, useAuth } from './context/AuthContext';
-import { Web3Provider } from '../context/Web3Context';
+// Shared Components
+import PrivateRoute from './components/shared/PrivateRoute';
+import Layout from './components/shared/Layout';
 
 function App() {
   return (
-    <AuthProvider>
-      <Web3Provider>
-        <Router>
+    <Router>
+      <AuthProvider>
+        <WalletProvider>
           <div className="App">
-            <Toaster position="top-right" />
-            <AppRoutes />
+            <Toaster 
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: 'white',
+                  color: '#374151',
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '0.75rem',
+                  padding: '1rem',
+                },
+                success: {
+                  iconTheme: {
+                    primary: '#10b981',
+                    secondary: 'white',
+                  },
+                },
+                error: {
+                  iconTheme: {
+                    primary: '#ef4444',
+                    secondary: 'white',
+                  },
+                },
+              }}
+            />
+            
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              
+              {/* Protected Routes */}
+              <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
+                <Route index element={<Navigate to="/dashboard" replace />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="onboarding" element={<Onboarding />} />
+                <Route path="jobs" element={<JobMatches />} />
+                <Route path="applications" element={<Applications />} />
+                <Route path="applications/:id" element={<ApplicationDetail />} />
+                <Route path="interviews" element={<Interviews />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="verification" element={<Verification />} />
+              </Route>
+              
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
           </div>
-        </Router>
-      </Web3Provider>
-    </AuthProvider>
-  );
-}
-
-function AppRoutes() {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="loading-screen">
-        <div className="spinner"></div>
-        <p>Loading JobInt...</p>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      {user && <Navbar />}
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={!user ? <LandingPage /> : <Navigate to="/dashboard" />} />
-        <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />
-        <Route path="/register" element={!user ? <Register /> : <Navigate to="/dashboard" />} />
-
-        {/* Protected Routes */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile-setup"
-          element={
-            <ProtectedRoute>
-              <ProfileSetup />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/applications"
-          element={
-            <ProtectedRoute>
-              <Applications />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/interviews"
-          element={
-            <ProtectedRoute>
-              <Interviews />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* 404 */}
-        <Route path="*" element={<div className="not-found"><h1>404 - Page Not Found</h1></div>} />
-      </Routes>
-    </>
+        </WalletProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 
