@@ -8,7 +8,7 @@ const cron = require('node-cron');
 const logger = require('./utils/logger');
 
 // Database and Redis
-const { pool } = require('../config/database');
+const { pool } = require('./config/database');
 const { redisClient } = require('./config/redis');
 
 // Routes
@@ -156,9 +156,9 @@ async function startServer() {
     setupCronJobs();
 
     app.listen(PORT, () => {
-      logger.info(` Server running on port ${PORT}`);
-      logger.info(` Environment: ${process.env.NODE_ENV}`);
-      logger.info(` Client URL: ${process.env.CLIENT_URL}`);
+      logger.info(`🚀 Server running on port ${PORT}`);
+      logger.info(`📍 Environment: ${process.env.NODE_ENV}`);
+      logger.info(`🌐 Client URL: ${process.env.CLIENT_URL}`);
     });
   } catch (error) {
     logger.error('Failed to start server:', error);

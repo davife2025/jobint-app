@@ -1,85 +1,88 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './contexts/AuthContext';
-import { WalletProvider } from './contexts/Walletcontext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { Web3Provider } from './context/Web3Context';
 
-// Auth Pages
-import Login from './components/auth/Login';
-import Register from './components/auth/Register';
-import Onboarding from './components/auth/Onboarding';
+// Pages
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Applications from './pages/Applications';
+import Interviews from './pages/Interviews';
+import Settings from './pages/Settings';
+import LandingPage from './pages/LandingPage';
 
-// Dashboard Pages
-import Dashboard from './components/dashboard/Dashboard';
-import JobMatches from './components/jobs/JobMatches';
-import Applications from './components/applications/Applications';
-import ApplicationDetail from './components/applications/ApplicationDetail';
-import Interviews from './components/interviews/Interviews';
-import Profile from './components/profile/Profile';
-import Verification from './components/profile/Verification';
+// Components
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 
-// Shared Components
-import PrivateRoute from './components/shared/PrivateRoute';
-import Layout from './components/shared/Layout';
+import './App.css';
+
+function AppRoutes() {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <Router>
+      <div className="min-h-screen bg-gray-50">
+        {isAuthenticated && <Navbar />}
+        
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={
+            isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />
+          } />
+          <Route path="/login" element={
+            isAuthenticated ? <Navigate to="/dashboard" /> : <Login />
+          } />
+          <Route path="/register" element={
+            isAuthenticated ? <Navigate to="/dashboard" /> : <Register />
+          } />
+
+          {/* Protected routes */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/applications" element={
+            <ProtectedRoute>
+              <Applications />
+            </ProtectedRoute>
+          } />
+          <Route path="/interviews" element={
+            <ProtectedRoute>
+              <Interviews />
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          } />
+
+          {/* 404 */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <WalletProvider>
-          <div className="App">
-            <Toaster 
-              position="top-right"
-              toastOptions={{
-                duration: 4000,
-                style: {
-                  background: 'white',
-                  color: '#374151',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '0.75rem',
-                  padding: '1rem',
-                },
-                success: {
-                  iconTheme: {
-                    primary: '#10b981',
-                    secondary: 'white',
-                  },
-                },
-                error: {
-                  iconTheme: {
-                    primary: '#ef4444',
-                    secondary: 'white',
-                  },
-                },
-              }}
-            />
-            
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              
-              {/* Protected Routes */}
-              <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
-                <Route index element={<Navigate to="/dashboard" replace />} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="onboarding" element={<Onboarding />} />
-                <Route path="jobs" element={<JobMatches />} />
-                <Route path="applications" element={<Applications />} />
-                <Route path="applications/:id" element={<ApplicationDetail />} />
-                <Route path="interviews" element={<Interviews />} />
-                <Route path="profile" element={<Profile />} />
-                <Route path="verification" element={<Verification />} />
-              </Route>
-              
-              {/* Fallback */}
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Routes>
-          </div>
-        </WalletProvider>
-      </AuthProvider>
-    </Router>
+    <AuthProvider>
+      <Web3Provider>
+        <AppRoutes />
+      </Web3Provider>
+    </AuthProvider>
   );
 }
 
