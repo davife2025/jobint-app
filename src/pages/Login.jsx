@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Briefcase } from 'lucide-react';
+import { Briefcase, ArrowRight } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,6 +22,8 @@ const Login = () => {
       const result = await login(formData.email, formData.password);
       
       if (result.success) {
+        // Clear guest mode when logging in
+        localStorage.removeItem('guestMode');
         navigate('/dashboard');
       } else {
         setError(result.error);
@@ -38,6 +40,13 @@ const Login = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleGuestAccess = () => {
+    // Set guest mode flag in localStorage
+    localStorage.setItem('guestMode', 'true');
+    // Navigate to dashboard as a guest
+    navigate('/dashboard');
   };
 
   return (
@@ -99,6 +108,28 @@ const Login = () => {
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
+
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or</span>
+            </div>
+          </div>
+
+          {/* Continue without signing in button */}
+          <button
+            onClick={handleGuestAccess}
+            className="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
+            Continue as Guest
+            <ArrowRight className="w-4 h-4" />
+          </button>
+          <p className="text-xs text-gray-500 text-center mt-2">
+            Explore the platform with limited features
+          </p>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">

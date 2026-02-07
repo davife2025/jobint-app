@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Briefcase, Calendar, Bot, Shield, Zap, TrendingUp } from 'lucide-react';
+import { Briefcase, Calendar, Bot, Shield, Zap, TrendingUp, ArrowRight } from 'lucide-react';
 import '../styles/landing.css';
 
 function LandingPage() {
@@ -85,17 +85,26 @@ function LandingPage() {
             Automate your entire job application process with AI. From discovering opportunities 
             to scheduling interviews, JobInt handles it all while you focus on preparation.
           </p>
-          <div className="flex gap-4 justify-center">
+          <div className="flex gap-4 justify-center flex-wrap">
             <button
               onClick={() => navigate('/register')}
               className="px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-lg shadow-lg"
             >
               Start Free Trial
             </button>
-            <button className="px-8 py-4 bg-white text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-lg shadow-lg">
+            <button 
+              onClick={() => {
+                // Scroll to features section
+                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="px-8 py-4 bg-white text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-lg shadow-lg"
+            >
               Watch Demo
             </button>
           </div>
+          <p className="text-sm text-gray-500 mt-4">
+            No credit card required • 14-day free trial • Cancel anytime
+          </p>
         </div>
 
         {/* Stats */}
@@ -110,7 +119,7 @@ function LandingPage() {
       </div>
 
       {/* Features Section */}
-      <div className="bg-white py-20">
+      <div id="features" className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -201,9 +210,10 @@ function LandingPage() {
           </p>
           <button
             onClick={() => navigate('/register')}
-            className="px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-gray-100 font-medium text-lg shadow-lg"
+            className="px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-gray-100 font-medium text-lg shadow-lg inline-flex items-center gap-2"
           >
             Start Your Free Trial
+            <ArrowRight className="w-5 h-5" />
           </button>
           <p className="text-blue-100 mt-4">
             No credit card required • 14-day free trial • Cancel anytime
@@ -227,7 +237,7 @@ function LandingPage() {
             <div>
               <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Features</a></li>
+                <li><a href="#features" className="hover:text-white">Features</a></li>
                 <li><a href="#" className="hover:text-white">Pricing</a></li>
                 <li><a href="#" className="hover:text-white">FAQ</a></li>
               </ul>

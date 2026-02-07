@@ -20,6 +20,9 @@ import './App.css';
 
 function AppRoutes() {
   const { isAuthenticated, loading } = useAuth();
+  
+  // Check if user is in guest mode
+  const isGuestMode = localStorage.getItem('guestMode') === 'true';
 
   if (loading) {
     return (
@@ -32,7 +35,7 @@ function AppRoutes() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
-        {isAuthenticated && <Navbar />}
+        {(isAuthenticated || isGuestMode) && <Navbar />}
         
         <Routes>
           {/* Public routes */}
@@ -46,24 +49,26 @@ function AppRoutes() {
             isAuthenticated ? <Navigate to="/dashboard" /> : <Register />
           } />
 
-          {/* Protected routes */}
+          {/* Protected routes - accessible by authenticated users OR guests */}
           <Route path="/dashboard" element={
-            <ProtectedRoute>
+            <ProtectedRoute allowGuest={true}>
               <Dashboard />
             </ProtectedRoute>
           } />
           <Route path="/applications" element={
-            <ProtectedRoute>
+            <ProtectedRoute allowGuest={true}>
               <Applications />
             </ProtectedRoute>
           } />
           <Route path="/interviews" element={
-            <ProtectedRoute>
+            <ProtectedRoute allowGuest={true}>
               <Interviews />
             </ProtectedRoute>
           } />
+          
+          {/* Settings requires full authentication */}
           <Route path="/settings" element={
-            <ProtectedRoute>
+            <ProtectedRoute allowGuest={false}>
               <Settings />
             </ProtectedRoute>
           } />
