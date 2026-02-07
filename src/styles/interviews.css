@@ -1,0 +1,539 @@
+/* ==========================================
+   INTERVIEWS PAGE STYLES
+   Calendar-Focused, Time-Based Design
+   ========================================== */
+
+.interviews-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #fafbfc 100%);
+}
+
+/* ==========================================
+   PAGE HEADER
+   ========================================== */
+
+.interviews-header {
+  background: white;
+  border-bottom: 1px solid var(--color-gray-200);
+  padding: var(--space-8) 0;
+}
+
+.interviews-header-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ==========================================
+   TAB FILTERS
+   ========================================== */
+
+.interviews-tabs {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  border-bottom: 2px solid var(--color-gray-200);
+  display: flex;
+  gap: var(--space-2);
+}
+
+.interview-tab {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-gray-600);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.interview-tab:hover {
+  color: var(--color-gray-900);
+  background: var(--color-gray-50);
+}
+
+.interview-tab.active {
+  color: var(--color-primary-600);
+  border-bottom-color: var(--color-primary-600);
+  background: transparent;
+}
+
+.tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--space-1);
+  background: var(--color-gray-200);
+  color: var(--color-gray-700);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+}
+
+.interview-tab.active .tab-badge {
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+}
+
+/* ==========================================
+   INTERVIEWS LIST
+   ========================================== */
+
+.interviews-list {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+.interviews-grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.interview-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  border: 2px solid var(--color-gray-200);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--space-6);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.interview-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--interview-color-1), var(--interview-color-2));
+}
+
+.interview-card:hover {
+  border-color: var(--interview-color-1);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Interview Card Color Themes */
+.interview-card.upcoming {
+  --interview-color-1: #3b82f6;
+  --interview-color-2: #2563eb;
+}
+
+.interview-card.past {
+  --interview-color-1: #6b7280;
+  --interview-color-2: #4b5563;
+}
+
+.interview-card.completed {
+  --interview-color-1: #10b981;
+  --interview-color-2: #059669;
+}
+
+.interview-card.cancelled {
+  --interview-color-1: #ef4444;
+  --interview-color-2: #dc2626;
+}
+
+/* ==========================================
+   DATE DISPLAY MODULE
+   ========================================== */
+
+.interview-date-module {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  padding: var(--space-4);
+  background: linear-gradient(135deg, var(--interview-color-1), var(--interview-color-2));
+  border-radius: var(--radius-lg);
+  color: white;
+  text-align: center;
+}
+
+.interview-day {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  line-height: 1;
+  margin-bottom: var(--space-1);
+}
+
+.interview-month {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-1);
+}
+
+.interview-weekday {
+  font-size: var(--text-xs);
+  opacity: 0.9;
+}
+
+/* ==========================================
+   INTERVIEW DETAILS
+   ========================================== */
+
+.interview-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.interview-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.interview-position {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-gray-900);
+}
+
+.interview-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+}
+
+.interview-status-badge.scheduled {
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+}
+
+.interview-status-badge.completed {
+  background: var(--color-success-light);
+  color: var(--color-success-dark);
+}
+
+.interview-status-badge.cancelled {
+  background: var(--color-error-light);
+  color: var(--color-error-dark);
+}
+
+.interview-company-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.interview-company {
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--color-gray-700);
+}
+
+.interview-interviewer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-gray-500);
+}
+
+.interview-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-gray-50);
+  border-radius: var(--radius-lg);
+}
+
+.interview-meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+}
+
+.interview-meta-item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-gray-400);
+}
+
+.interview-time {
+  font-weight: var(--font-semibold);
+  color: var(--color-gray-900);
+}
+
+.interview-notes {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-left: 4px solid #fbbf24;
+  border-radius: var(--radius-lg);
+}
+
+.interview-notes-title {
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: #92400e;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+}
+
+.interview-notes-text {
+  font-size: var(--text-sm);
+  color: #78350f;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   INTERVIEW ACTIONS
+   ========================================== */
+
+.interview-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-end;
+}
+
+.interview-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-700));
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.interview-action-btn:hover {
+  background: linear-gradient(135deg, var(--color-primary-700), var(--color-primary-800));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.interview-action-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.interview-action-btn-secondary {
+  background: white;
+  color: var(--color-gray-700);
+  border: 1px solid var(--color-gray-300);
+}
+
+.interview-action-btn-secondary:hover {
+  background: var(--color-gray-50);
+  border-color: var(--color-primary-500);
+  color: var(--color-primary-600);
+}
+
+/* ==========================================
+   COUNTDOWN TIMER
+   ========================================== */
+
+.interview-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100));
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-primary-700);
+  margin-top: var(--space-2);
+}
+
+.interview-countdown.urgent {
+  background: linear-gradient(135deg, var(--color-warning-light), #fde68a);
+  color: var(--color-warning-dark);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+  }
+}
+
+/* ==========================================
+   EMPTY STATE
+   ========================================== */
+
+.interviews-empty {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-16);
+  text-align: center;
+  border: 2px dashed var(--color-gray-300);
+}
+
+.interviews-empty-icon {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto var(--space-8);
+  background: linear-gradient(135deg, var(--color-gray-100), var(--color-gray-200));
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.interviews-empty h3 {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-gray-900);
+  margin-bottom: var(--space-3);
+}
+
+.interviews-empty p {
+  font-size: var(--text-base);
+  color: var(--color-gray-500);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   PREPARATION CHECKLIST
+   ========================================== */
+
+.interview-prep-section {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  background: white;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+}
+
+.prep-checklist-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-gray-900);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.prep-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.prep-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+}
+
+.prep-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.prep-checkbox.checked {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  position: relative;
+}
+
+.prep-checkbox.checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 768px) {
+  .interview-card {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .interview-date-module {
+    min-width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .interview-meta-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .interview-actions {
+    width: 100%;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .interview-action-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .interviews-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .interviews-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .interview-tab {
+    white-space: nowrap;
+  }
+}

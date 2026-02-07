@@ -53,7 +53,7 @@ export const userAPI = {
   getStats: () => api.get('/users/stats'),
 };
 
-export const jobAPI = {
+export const jobsAPI = {
   getJobs: (params) => api.get('/jobs', { params }),
   getJob: (id) => api.get(`/jobs/${id}`),
   getPendingMatches: () => api.get('/jobs/matches/pending'),
@@ -63,7 +63,7 @@ export const jobAPI = {
   getStats: () => api.get('/jobs/stats/overview'),
 };
 
-export const applicationAPI = {
+export const applicationsAPI = {
   getApplications: (params) => api.get('/applications', { params }),
   getApplication: (id) => api.get(`/applications/${id}`),
   createApplication: (data) => api.post('/applications', data),
@@ -73,7 +73,7 @@ export const applicationAPI = {
   getCoverLetter: (id) => api.get(`/applications/${id}/cover-letter`),
 };
 
-export const interviewAPI = {
+export const interviewsAPI = {
   getInterviews: (params) => api.get('/interviews', { params }),
   createInterview: (data) => api.post('/interviews', data),
   updateInterview: (id, data) => api.put(`/interviews/${id}`, data),
@@ -95,7 +95,7 @@ export const blockchainAPI = {
   estimateGas: (params) => api.get('/blockchain/gas-estimate', { params }),
 };
 
-export const notificationAPI = {
+export const notificationsAPI = {
   getNotifications: (params) => api.get('/notifications', { params }),
   markAsRead: (id) => api.put(`/notifications/${id}/read`),
   markAllAsRead: () => api.put('/notifications/read-all'),

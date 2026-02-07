@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useWeb3 } from '../context/Web3Context';
+import { useAuth } from '../contexts/AuthContext';
+import { useWeb3 } from '../contexts/web3Context';
 import { notificationsAPI } from '../services/api';
 import { Briefcase, LayoutDashboard, FileText, Calendar, Settings, Bell, Wallet, LogOut } from 'lucide-react';
 

@@ -1,329 +1,184 @@
-// src/context/Web3Context.jsx
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import toast from 'react-hot-toast';
 
-const Web3Context = createContext();
-
-// Import contract ABI (you'll need to add this after deployment)
-import JobIntABI from '../contracts/JobIntVerification.json';
-
-const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS;
-const BSC_NETWORK = process.env.REACT_APP_BSC_NETWORK === 'mainnet' 
-  ? { chainId: '0x38', name: 'BSC Mainnet' }
-  : { chainId: '0x61', name: 'BSC Testnet' };
-
-export const Web3Provider = ({ children }) => {
-  const [account, setAccount] = useState(null);
-  const [provider, setProvider] = useState(null);
-  const [contract, setContract] = useState(null);
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [networkError, setNetworkError] = useState(false);
-
-  useEffect(() => {
-    checkIfWalletIsConnected();
-  }, []);
-
-  const checkIfWalletIsConnected = async () => {
-    try {
-      if (!window.ethereum) {
-        console.log('MetaMask not installed');
-        return;
+// Contract ABI - embedded directly
+const contractABI = [
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "dataHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "recordType",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
       }
-
-      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-      
-      if (accounts.length > 0) {
-        await connectWallet();
+    ],
+    "name": "RecordCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "dataHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "recordType",
+        "type": "string"
       }
-    } catch (error) {
-      console.error('Error checking wallet:', error);
-    }
-  };
-
-  const connectWallet = async () => {
-    try {
-      if (!window.ethereum) {
-        toast.error('Please install MetaMask to use blockchain features');
-        window.open('https://metamask.io/download/', '_blank');
-        return;
+    ],
+    "name": "createRecord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "dataHashes",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "recordTypes",
+        "type": "string[]"
       }
-
-      setIsConnecting(true);
-
-      // Request account access
-      const accounts = await window.ethereum.request({ 
-        method: 'eth_requestAccounts' 
-      });
-
-      // Check if on correct network
-      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-      
-      if (chainId !== BSC_NETWORK.chainId) {
-        await switchNetwork();
+    ],
+    "name": "createRecordBatch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       }
-
-      // Create provider and signer
-      const web3Provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await web3Provider.getSigner();
-
-      // Initialize contract
-      const jobIntContract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        JobIntABI.abi,
-        signer
-      );
-
-      setAccount(accounts[0]);
-      setProvider(web3Provider);
-      setContract(jobIntContract);
-      setNetworkError(false);
-
-      toast.success('Wallet connected successfully!');
-
-    } catch (error) {
-      console.error('Error connecting wallet:', error);
-      toast.error('Failed to connect wallet');
-    } finally {
-      setIsConnecting(false);
-    }
-  };
-
-  const switchNetwork = async () => {
-    try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: BSC_NETWORK.chainId }],
-      });
-    } catch (switchError) {
-      // Network not added to MetaMask
-      if (switchError.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: BSC_NETWORK.chainId,
-                chainName: BSC_NETWORK.name,
-                rpcUrls: [
-                  BSC_NETWORK.chainId === '0x38' 
-                    ? 'https://bsc-dataseed.binance.org/' 
-                    : 'https://data-seed-prebsc-1-s1.binance.org:8545/'
-                ],
-                nativeCurrency: {
-                  name: 'BNB',
-                  symbol: 'BNB',
-                  decimals: 18
-                },
-                blockExplorerUrls: [
-                  BSC_NETWORK.chainId === '0x38'
-                    ? 'https://bscscan.com'
-                    : 'https://testnet.bscscan.com'
-                ]
-              },
-            ],
-          });
-        } catch (addError) {
-          console.error('Error adding network:', addError);
-          toast.error('Failed to add BSC network to MetaMask');
-        }
+    ],
+    "name": "getUserRecordCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
-    }
-  };
-
-  const disconnectWallet = () => {
-    setAccount(null);
-    setProvider(null);
-    setContract(null);
-    toast.success('Wallet disconnected');
-  };
-
-  // Contract interaction methods
-
-  const submitApplicationToBlockchain = async (applicationData) => {
-    if (!contract) {
-      throw new Error('Contract not initialized');
-    }
-
-    try {
-      const { applicationId, jobId, company, jobTitle } = applicationData;
-      
-      // Create data hash
-      const dataHash = ethers.keccak256(
-        ethers.toUtf8Bytes(JSON.stringify({
-          applicationId,
-          jobId,
-          timestamp: Date.now()
-        }))
-      );
-
-      // Submit transaction
-      const tx = await contract.submitApplication(
-        applicationId,
-        jobId,
-        company,
-        jobTitle,
-        dataHash
-      );
-
-      toast.loading('Submitting to blockchain...', { id: 'blockchain-tx' });
-
-      const receipt = await tx.wait();
-
-      toast.success('Verified on blockchain!', { id: 'blockchain-tx' });
-
-      return {
-        txHash: receipt.hash,
-        blockNumber: receipt.blockNumber
-      };
-
-    } catch (error) {
-      console.error('Blockchain submission error:', error);
-      toast.error('Blockchain verification failed', { id: 'blockchain-tx' });
-      throw error;
-    }
-  };
-
-  const scheduleInterviewOnBlockchain = async (interviewData) => {
-    if (!contract) {
-      throw new Error('Contract not initialized');
-    }
-
-    try {
-      const { interviewId, applicationId, company, scheduledTime } = interviewData;
-      
-      const dataHash = ethers.keccak256(
-        ethers.toUtf8Bytes(JSON.stringify({
-          interviewId,
-          applicationId,
-          scheduledTime: scheduledTime.getTime()
-        }))
-      );
-
-      const timestamp = Math.floor(scheduledTime.getTime() / 1000);
-
-      const tx = await contract.scheduleInterview(
-        interviewId,
-        applicationId,
-        company,
-        timestamp,
-        dataHash
-      );
-
-      toast.loading('Recording interview on blockchain...', { id: 'blockchain-tx' });
-
-      const receipt = await tx.wait();
-
-      toast.success('Interview verified on blockchain!', { id: 'blockchain-tx' });
-
-      return {
-        txHash: receipt.hash,
-        blockNumber: receipt.blockNumber
-      };
-
-    } catch (error) {
-      console.error('Interview blockchain error:', error);
-      toast.error('Failed to verify interview on blockchain', { id: 'blockchain-tx' });
-      throw error;
-    }
-  };
-
-  const getUserApplicationsFromBlockchain = async () => {
-    if (!contract || !account) {
-      return [];
-    }
-
-    try {
-      const applicationIds = await contract.getUserApplications(account);
-      
-      const applications = await Promise.all(
-        applicationIds.map(async (id) => {
-          const app = await contract.getApplication(id);
-          return {
-            applicationId: id,
-            jobId: app.jobId,
-            company: app.company,
-            jobTitle: app.jobTitle,
-            timestamp: new Date(Number(app.timestamp) * 1000)
-          };
-        })
-      );
-
-      return applications;
-
-    } catch (error) {
-      console.error('Error fetching blockchain applications:', error);
-      return [];
-    }
-  };
-
-  const getUserStatsFromBlockchain = async () => {
-    if (!contract || !account) {
-      return { applications: 0, interviews: 0 };
-    }
-
-    try {
-      const [appCount, interviewCount] = await Promise.all([
-        contract.getUserApplicationCount(account),
-        contract.getUserInterviewCount(account)
-      ]);
-
-      return {
-        applications: Number(appCount),
-        interviews: Number(interviewCount)
-      };
-
-    } catch (error) {
-      console.error('Error fetching blockchain stats:', error);
-      return { applications: 0, interviews: 0 };
-    }
-  };
-
-  // Listen for account changes
-  useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', (accounts) => {
-        if (accounts.length === 0) {
-          disconnectWallet();
-        } else {
-          setAccount(accounts[0]);
-          toast.info('Account changed');
-        }
-      });
-
-      window.ethereum.on('chainChanged', () => {
-        window.location.reload();
-      });
-    }
-
-    return () => {
-      if (window.ethereum) {
-        window.ethereum.removeAllListeners('accountsChanged');
-        window.ethereum.removeAllListeners('chainChanged');
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
       }
-    };
-  }, []);
+    ],
+    "name": "getUserRecord",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "dataHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "recordType",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "dataHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "verifyRecord",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "exists",
+        "type": "bool"
+      },
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "recordType",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+];
 
-  const value = {
-    account,
-    provider,
-    contract,
-    isConnecting,
-    networkError,
-    connectWallet,
-    disconnectWallet,
-    submitApplicationToBlockchain,
-    scheduleInterviewOnBlockchain,
-    getUserApplicationsFromBlockchain,
-    getUserStatsFromBlockchain
-  };
+const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS || '0x0000000000000000000000000000000000000000';
 
-  return (
-    <Web3Context.Provider value={value}>
-      {children}
-    </Web3Context.Provider>
-  );
+const BSC_TESTNET_PARAMS = {
+  chainId: '0x61',
+  chainName: 'BSC Testnet',
+  nativeCurrency: {
+    name: 'BNB',
+    symbol: 'BNB',
+    decimals: 18
+  },
+  rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+  blockExplorerUrls: ['https://testnet.bscscan.com/']
 };
+
+const Web3Context = createContext(null);
 
 export const useWeb3 = () => {
   const context = useContext(Web3Context);
@@ -332,5 +187,166 @@ export const useWeb3 = () => {
   }
   return context;
 };
+
+export function Web3Provider({ children }) {
+  const [account, setAccount] = useState(null);
+  const [contract, setContract] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    checkWalletConnection();
+  }, []);
+
+  const checkWalletConnection = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+          await initializeContract();
+        }
+      } catch (err) {
+        console.error('Error checking wallet connection:', err);
+      }
+    }
+  };
+
+  const connectWallet = async () => {
+    if (typeof window.ethereum === 'undefined') {
+      setError('MetaMask is not installed. Please install MetaMask to use blockchain features.');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const accounts = await window.ethereum.request({ 
+        method: 'eth_requestAccounts' 
+      });
+      
+      setAccount(accounts[0]);
+
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: BSC_TESTNET_PARAMS.chainId }],
+        });
+      } catch (switchError) {
+        if (switchError.code === 4902) {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [BSC_TESTNET_PARAMS],
+          });
+        } else {
+          throw switchError;
+        }
+      }
+
+      await initializeContract();
+
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on('chainChanged', handleChainChanged);
+
+    } catch (err) {
+      console.error('Error connecting wallet:', err);
+      setError(err.message || 'Failed to connect wallet');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const initializeContract = async () => {
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contractInstance = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        contractABI,
+        signer
+      );
+      setContract(contractInstance);
+    } catch (err) {
+      console.error('Error initializing contract:', err);
+      setError('Failed to initialize blockchain contract');
+    }
+  };
+
+  const handleAccountsChanged = (accounts) => {
+    if (accounts.length === 0) {
+      setAccount(null);
+      setContract(null);
+    } else if (accounts[0] !== account) {
+      setAccount(accounts[0]);
+      initializeContract();
+    }
+  };
+
+  const handleChainChanged = () => {
+    window.location.reload();
+  };
+
+  const disconnectWallet = () => {
+    setAccount(null);
+    setContract(null);
+    if (window.ethereum) {
+      window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+      window.ethereum.removeListener('chainChanged', handleChainChanged);
+    }
+  };
+
+  const createBlockchainRecord = async (dataHash, recordType) => {
+    if (!contract) {
+      throw new Error('Contract not initialized. Please connect your wallet.');
+    }
+
+    try {
+      const tx = await contract.createRecord(dataHash, recordType);
+      const receipt = await tx.wait();
+      return receipt.hash;
+    } catch (err) {
+      console.error('Error creating blockchain record:', err);
+      throw new Error('Failed to create blockchain record');
+    }
+  };
+
+  const verifyBlockchainRecord = async (dataHash) => {
+    if (!contract) {
+      throw new Error('Contract not initialized. Please connect your wallet.');
+    }
+
+    try {
+      const result = await contract.verifyRecord(dataHash);
+      return {
+        exists: result[0],
+        user: result[1],
+        recordType: result[2],
+        timestamp: Number(result[3])
+      };
+    } catch (err) {
+      console.error('Error verifying blockchain record:', err);
+      throw new Error('Failed to verify blockchain record');
+    }
+  };
+
+  const value = {
+    account,
+    contract,
+    loading,
+    error,
+    connectWallet,
+    disconnectWallet,
+    createBlockchainRecord,
+    verifyBlockchainRecord,
+    isConnected: !!account
+  };
+
+  return (
+    <Web3Context.Provider value={value}>
+      {children}
+    </Web3Context.Provider>
+  );
+}
 
 export default Web3Context;

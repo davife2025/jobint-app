@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import { Web3Provider } from './context/Web3Context';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { Web3Provider } from './contexts/web3Context';
 
 // Pages
 import Login from './pages/Login';
@@ -10,10 +10,10 @@ import Dashboard from './pages/Dashboard';
 import Applications from './pages/Applications';
 import Interviews from './pages/Interviews';
 import Settings from './pages/Settings';
-import LandingPage from './pages/LandingPage';
+import LandingPage from './pages/Landingpage';
 
 // Components
-import Navbar from './components/Navbar';
+import Navbar from './components/NavBar';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import './App.css';
