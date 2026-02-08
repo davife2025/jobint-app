@@ -1,5 +1,5 @@
 const OpenAI = require('openai');
-const { query } = require('./config/database');
+const { query } = require('../config/database');
 const logger = require('../utils/logger');
 
 const openai = new OpenAI({

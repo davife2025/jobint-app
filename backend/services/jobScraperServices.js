@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-const { query } = require('./config/database');
+const { query } = require('../config/database');
 const logger = require('../utils/logger');
 
 puppeteer.use(StealthPlugin());

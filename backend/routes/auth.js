@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { query } = require('./config/database');
+const { query } = require('../config/database');
 const { validateRegister, validateLogin } = require('../middleware/validation');
 const logger = require('../utils/logger');
 

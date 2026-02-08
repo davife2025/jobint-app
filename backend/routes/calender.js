@@ -1,6 +1,6 @@
 const express = require('express');
 const auth = require('../middleware/auth');
-const { query } = require('./config/database');
+const { query } = require('../config/database');
 const calendarService = require('../services/calendarService');
 const logger = require('../utils/logger');
 
