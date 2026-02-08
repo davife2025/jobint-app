@@ -1,7 +1,7 @@
 const express = require('express');
 const auth = require('../middleware/auth');
 const { query } = require('../config/database');
-const calendarService = require('../services/calendarService');
+const calendarService = require('../services/calenderService');
 const logger = require('../utils/logger');
 
 const router = express.Router();

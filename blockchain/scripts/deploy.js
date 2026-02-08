@@ -1,4 +1,4 @@
-import hre from "hardhat";
+const hre = require("hardhat");
 
 async function main() {
   console.log("🚀 Deploying JobIntVerification contract to BSC Testnet...\n");

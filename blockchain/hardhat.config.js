@@ -1,15 +1,12 @@
-import { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
+require("@nomicfoundation/hardhat-toolbox");
+const path = require("path");
+const dotenv = require("dotenv");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Load .env from backend directory
+dotenv.config({ path: path.join(__dirname, "..", "backend", ".env") });
 
-dotenv.config({ path: path.join(__dirname, "../backend/.env") });
-
-const config = {
+/** @type import('hardhat/config').HardhatUserConfig */
+module.exports = {
   solidity: {
     version: "0.8.19",
     settings: {
@@ -21,12 +18,17 @@ const config = {
   },
   networks: {
     bsc_testnet: {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+      url: process.env.BSC_TESTNET_RPC_URL || "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
-      gasPrice: 10000000000,
+      gasPrice: 10000000000, // 10 gwei
+      timeout: 60000
     }
+  },
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts"
   }
 };
-
-export default config;

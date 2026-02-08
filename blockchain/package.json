@@ -1,0 +1,16 @@
+{
+  "name": "jobint-blockchain",
+  "version": "1.0.0",
+  "description": "JobInt Smart Contracts",
+  "scripts": {
+    "deploy": "hardhat run scripts/deploy.js --network bsc_testnet",
+    "test": "hardhat test",
+    "compile": "hardhat compile"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.0",
+    "hardhat": "^2.28.4"
+  }
+}

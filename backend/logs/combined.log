@@ -1,0 +1,55 @@
+{"code":"ECONNREFUSED","level":"error","message":"❌ Database connection failed:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at C:\\Users\\USER\\Desktop\\jobint-app\\jobint-app\\backend\\node_modules\\pg-pool\\index.js:45:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async initializeDatabase (C:\\Users\\USER\\Desktop\\jobint-app\\jobint-app\\backend\\server.js:114:5)\n    at async startServer (C:\\Users\\USER\\Desktop\\jobint-app\\jobint-app\\backend\\server.js:154:5)","timestamp":"2026-02-08 13:11:46"}
+{"level":"info","message":"✅ Database connected","service":"jobint-backend","timestamp":"2026-02-08 16:59:14"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:14"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:14"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:14"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:15"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:15"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:16"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:16"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:17"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:17"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:19"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:19"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:22"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:22"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:25"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:25"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:28"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:28"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:32"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:32"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:37"}
+{"code":"ECONNREFUSED","level":"error","message":"Redis Client Error:","service":"jobint-backend","stack":"AggregateError [ECONNREFUSED]: \n    at internalConnectMultiple (node:net:1134:18)\n    at afterConnectMultiple (node:net:1715:7)","timestamp":"2026-02-08 16:59:37"}
+{"level":"warn","message":"Redis client reconnecting...","service":"jobint-backend","timestamp":"2026-02-08 16:59:42"}
+{"level":"error","message":"Redis reconnection limit reached","service":"jobint-backend","timestamp":"2026-02-08 16:59:42"}
+{"level":"info","message":"✅ Database connected","service":"jobint-backend","timestamp":"2026-02-08 17:03:50"}
+{"level":"info","message":"Redis client connected","service":"jobint-backend","timestamp":"2026-02-08 17:03:50"}
+{"level":"info","message":"✅ Redis connected","service":"jobint-backend","timestamp":"2026-02-08 17:03:50"}
+{"level":"info","message":"✅ Cron jobs scheduled","service":"jobint-backend","timestamp":"2026-02-08 17:03:50"}
+{"level":"info","message":"🚀 Server running on port 5000","service":"jobint-backend","timestamp":"2026-02-08 17:03:50"}
+{"level":"info","message":"📍 Environment: undefined","service":"jobint-backend","timestamp":"2026-02-08 17:03:50"}
+{"level":"info","message":"🌐 Client URL: undefined","service":"jobint-backend","timestamp":"2026-02-08 17:03:50"}
+{"ip":"::1","level":"info","message":"GET /api/applications/stats/overview","service":"jobint-backend","timestamp":"2026-02-08 17:14:47","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/interviews","service":"jobint-backend","timestamp":"2026-02-08 17:14:48","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/jobs/matches/pending","service":"jobint-backend","timestamp":"2026-02-08 17:14:48","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/applications","service":"jobint-backend","timestamp":"2026-02-08 17:14:48","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/applications/stats/overview","service":"jobint-backend","timestamp":"2026-02-08 17:14:48","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/interviews","service":"jobint-backend","timestamp":"2026-02-08 17:14:48","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/jobs/matches/pending","service":"jobint-backend","timestamp":"2026-02-08 17:14:48","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/applications","service":"jobint-backend","timestamp":"2026-02-08 17:14:48","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"level":"info","message":"✅ Database connected","service":"jobint-backend","timestamp":"2026-02-08 20:45:51"}
+{"level":"info","message":"Redis client connected","service":"jobint-backend","timestamp":"2026-02-08 20:45:51"}
+{"level":"info","message":"✅ Redis connected","service":"jobint-backend","timestamp":"2026-02-08 20:45:51"}
+{"level":"info","message":"✅ Cron jobs scheduled","service":"jobint-backend","timestamp":"2026-02-08 20:45:51"}
+{"level":"info","message":"🚀 Server running on port 5000","service":"jobint-backend","timestamp":"2026-02-08 20:45:51"}
+{"level":"info","message":"📍 Environment: undefined","service":"jobint-backend","timestamp":"2026-02-08 20:45:51"}
+{"level":"info","message":"🌐 Client URL: undefined","service":"jobint-backend","timestamp":"2026-02-08 20:45:51"}
+{"ip":"::1","level":"info","message":"GET /api/applications/stats/overview","service":"jobint-backend","timestamp":"2026-02-08 20:46:43","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/interviews","service":"jobint-backend","timestamp":"2026-02-08 20:46:43","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/jobs/matches/pending","service":"jobint-backend","timestamp":"2026-02-08 20:46:43","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/applications","service":"jobint-backend","timestamp":"2026-02-08 20:46:43","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/applications/stats/overview","service":"jobint-backend","timestamp":"2026-02-08 20:46:43","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/interviews","service":"jobint-backend","timestamp":"2026-02-08 20:46:43","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/jobs/matches/pending","service":"jobint-backend","timestamp":"2026-02-08 20:46:43","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"GET /api/applications","service":"jobint-backend","timestamp":"2026-02-08 20:46:43","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"}

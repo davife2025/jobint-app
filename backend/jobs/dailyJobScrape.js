@@ -1,6 +1,6 @@
-const jobScraperService = require('../services/jobScraperService');
-const matchingService = require('../services/matchingService');
-const { query } = require('./config/database');
+const jobScraperService = require('../services/jobScraperServices');
+const matchingService = require('../services/matchingServices');
+const { query } = require('../config/database');
 const logger = require('../utils/logger');
 
 /**

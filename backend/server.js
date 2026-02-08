@@ -16,10 +16,10 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const jobRoutes = require('./routes/jobs');
 const applicationRoutes = require('./routes/applications');
-const interviewRoutes = require('./routes/interviews');
-const calendarRoutes = require('./routes/calendar');
+const interviewRoutes = require('./routes/interview');
+const calendarRoutes = require('./routes/calender');
 const blockchainRoutes = require('./routes/blockchain');
-const notificationRoutes = require('./routes/notifications');
+const notificationRoutes = require('./routes/notification');
 
 // Cron jobs
 const dailyJobScrape = require('./jobs/dailyJobScrape');
