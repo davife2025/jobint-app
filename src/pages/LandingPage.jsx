@@ -363,25 +363,25 @@ function LandingPage() {
             <div>
               <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#features" className="hover:text-white">Features</a></li>
-                <li><a href="#" className="hover:text-white">Pricing</a></li>
-                <li><a href="#" className="hover:text-white">FAQ</a></li>
+                <li><a href="/" className="hover:text-white">Features</a></li>
+                <li><a href="/" className="hover:text-white">Pricing</a></li>
+                <li><a href="/" className="hover:text-white">FAQ</a></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Company</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">About</a></li>
-                <li><a href="#" className="hover:text-white">Blog</a></li>
-                <li><a href="#" className="hover:text-white">Careers</a></li>
+                <li><a href="/" className="hover:text-white">About</a></li>
+                <li><a href="/" className="hover:text-white">Blog</a></li>
+                <li><a href="/" className="hover:text-white">Careers</a></li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-4">Legal</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Privacy</a></li>
-                <li><a href="#" className="hover:text-white">Terms</a></li>
-                <li><a href="#" className="hover:text-white">Security</a></li>
+                <li><a href="/" className="hover:text-white">Privacy</a></li>
+                <li><a href="/" className="hover:text-white">Terms</a></li>
+                <li><a href="/" className="hover:text-white">Security</a></li>
               </ul>
             </div>
           </div>

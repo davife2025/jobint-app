@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Briefcase, ArrowRight, Rocket } from 'lucide-react';
+import { Briefcase, Rocket } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();

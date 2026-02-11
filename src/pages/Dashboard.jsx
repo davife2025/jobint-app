@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { applicationsAPI, interviewsAPI, jobsAPI, notificationsAPI } from '../services/api';
-import { Calendar, TrendingUp, Briefcase, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react';
+import { Calendar, TrendingUp, Briefcase, CheckCircle2, AlertCircle } from 'lucide-react';
 import ActivityFeed from '../components/activityFeeds';
 import StatsCard from '../components/statsCard';
 import InterviewCard from '../components/interviewCard';
