@@ -1,6 +1,6 @@
-// src/pages/Applications.jsx - UPDATED FOR GUEST MODE
+// src/pages/Applications.jsx - FIXED WITH useCallback
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Calendar, MapPin, ExternalLink, CheckCircle, Clock, XCircle, Award, Key } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { applicationsAPI, guestAPI } from '../services/api';
@@ -13,11 +13,7 @@ function Applications() {
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    fetchApplications();
-  }, [isGuestMode, isAuthenticated]);
-
-  const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -41,7 +37,11 @@ function Applications() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [isGuestMode, isAuthenticated, getCurrentTrackingToken]);
+
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
 
   const getStatusInfo = (status) => {
     const statusConfig = {

@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+// src/contexts/web3Context.jsx - FIXED WITH useCallback
+
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 
 // Contract ABI - embedded directly
@@ -194,11 +196,23 @@ export function Web3Provider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    checkWalletConnection();
-  }, []);
+  const initializeContract = useCallback(async () => {
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contractInstance = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        contractABI,
+        signer
+      );
+      setContract(contractInstance);
+    } catch (err) {
+      console.error('Error initializing contract:', err);
+      setError('Failed to initialize blockchain contract');
+    }
+  }, []); // No dependencies - CONTRACT_ADDRESS and contractABI are constants
 
-  const checkWalletConnection = async () => {
+  const checkWalletConnection = useCallback(async () => {
     if (typeof window.ethereum !== 'undefined') {
       try {
         const accounts = await window.ethereum.request({ method: 'eth_accounts' });
@@ -210,7 +224,25 @@ export function Web3Provider({ children }) {
         console.error('Error checking wallet connection:', err);
       }
     }
-  };
+  }, [initializeContract]);
+
+  useEffect(() => {
+    checkWalletConnection();
+  }, [checkWalletConnection]);
+
+  const handleAccountsChanged = useCallback((accounts) => {
+    if (accounts.length === 0) {
+      setAccount(null);
+      setContract(null);
+    } else if (accounts[0] !== account) {
+      setAccount(accounts[0]);
+      initializeContract();
+    }
+  }, [account, initializeContract]);
+
+  const handleChainChanged = useCallback(() => {
+    window.location.reload();
+  }, []);
 
   const connectWallet = async () => {
     if (typeof window.ethereum === 'undefined') {
@@ -257,44 +289,14 @@ export function Web3Provider({ children }) {
     }
   };
 
-  const initializeContract = async () => {
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contractInstance = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        contractABI,
-        signer
-      );
-      setContract(contractInstance);
-    } catch (err) {
-      console.error('Error initializing contract:', err);
-      setError('Failed to initialize blockchain contract');
-    }
-  };
-
-  const handleAccountsChanged = (accounts) => {
-    if (accounts.length === 0) {
-      setAccount(null);
-      setContract(null);
-    } else if (accounts[0] !== account) {
-      setAccount(accounts[0]);
-      initializeContract();
-    }
-  };
-
-  const handleChainChanged = () => {
-    window.location.reload();
-  };
-
-  const disconnectWallet = () => {
+  const disconnectWallet = useCallback(() => {
     setAccount(null);
     setContract(null);
     if (window.ethereum) {
       window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
       window.ethereum.removeListener('chainChanged', handleChainChanged);
     }
-  };
+  }, [handleAccountsChanged, handleChainChanged]);
 
   const createBlockchainRecord = async (dataHash, recordType) => {
     if (!contract) {

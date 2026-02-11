@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useWeb3 } from '../contexts/web3Context';
 import { notificationsAPI } from '../services/api';
-import { Briefcase, LayoutDashboard, FileText, Calendar, Settings, Bell, Wallet, LogOut, Key, UserPlus } from 'lucide-react';
+import { Briefcase, LayoutDashboard, FileText, Calendar, Settings, Bell, Wallet, LogOut, UserPlus } from 'lucide-react';
 
 const Navbar = () => {
   const location = useLocation();
