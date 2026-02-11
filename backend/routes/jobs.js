@@ -6,101 +6,7 @@ const logger = require('../utils/logger');
 
 const router = express.Router();
 
-/**
- * GET /api/jobs
- * Get available jobs with filters
- */
-router.get('/', auth, async (req, res) => {
-  try {
-    const {
-      search,
-      location,
-      remote,
-      source,
-      page = 1,
-      limit = 20
-    } = req.query;
 
-    const offset = (page - 1) * limit;
-
-    let sql = `
-      SELECT id, source, title, company, location, description, 
-             url, salary, job_type, remote, posted_at, scraped_at
-      FROM job_listings
-      WHERE is_active = TRUE
-    `;
-    const params = [];
-    let paramIndex = 1;
-
-    if (search) {
-      sql += ` AND (title ILIKE $${paramIndex} OR company ILIKE $${paramIndex} OR description ILIKE $${paramIndex})`;
-      params.push(`%${search}%`);
-      paramIndex++;
-    }
-
-    if (location) {
-      sql += ` AND location ILIKE $${paramIndex}`;
-      params.push(`%${location}%`);
-      paramIndex++;
-    }
-
-    if (remote === 'true') {
-      sql += ` AND remote = TRUE`;
-    }
-
-    if (source) {
-      sql += ` AND source = $${paramIndex}`;
-      params.push(source);
-      paramIndex++;
-    }
-
-    sql += ` ORDER BY scraped_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
-    params.push(limit, offset);
-
-    const result = await query(sql, params);
-
-    // Get total count
-    const countResult = await query(
-      'SELECT COUNT(*) FROM job_listings WHERE is_active = TRUE'
-    );
-    const total = parseInt(countResult.rows[0].count);
-
-    res.json({
-      jobs: result.rows,
-      pagination: {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        total,
-        pages: Math.ceil(total / limit)
-      }
-    });
-  } catch (error) {
-    logger.error('Get jobs error:', error);
-    res.status(500).json({ error: 'Failed to fetch jobs' });
-  }
-});
-
-/**
- * GET /api/jobs/:id
- * Get single job details
- */
-router.get('/:id', auth, async (req, res) => {
-  try {
-    const result = await query(
-      'SELECT * FROM job_listings WHERE id = $1',
-      [req.params.id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Job not found' });
-    }
-
-    res.json({ job: result.rows[0] });
-  } catch (error) {
-    logger.error('Get job error:', error);
-    res.status(500).json({ error: 'Failed to fetch job' });
-  }
-});
 
 /**
  * GET /api/jobs/matches/pending
@@ -225,5 +131,104 @@ router.get('/stats/overview', auth, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch statistics' });
   }
 });
+
+
+
+/**
+ * GET /api/jobs
+ * Get available jobs with filters
+ */
+router.get('/', auth, async (req, res) => {
+  try {
+    const {
+      search,
+      location,
+      remote,
+      source,
+      page = 1,
+      limit = 20
+    } = req.query;
+
+    const offset = (page - 1) * limit;
+
+    let sql = `
+      SELECT id, source, title, company, location, description, 
+             url, salary, job_type, remote, posted_at, scraped_at
+      FROM job_listings
+      WHERE is_active = TRUE
+    `;
+    const params = [];
+    let paramIndex = 1;
+
+    if (search) {
+      sql += ` AND (title ILIKE $${paramIndex} OR company ILIKE $${paramIndex} OR description ILIKE $${paramIndex})`;
+      params.push(`%${search}%`);
+      paramIndex++;
+    }
+
+    if (location) {
+      sql += ` AND location ILIKE $${paramIndex}`;
+      params.push(`%${location}%`);
+      paramIndex++;
+    }
+
+    if (remote === 'true') {
+      sql += ` AND remote = TRUE`;
+    }
+
+    if (source) {
+      sql += ` AND source = $${paramIndex}`;
+      params.push(source);
+      paramIndex++;
+    }
+
+    sql += ` ORDER BY scraped_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
+    params.push(limit, offset);
+
+    const result = await query(sql, params);
+
+    // Get total count
+    const countResult = await query(
+      'SELECT COUNT(*) FROM job_listings WHERE is_active = TRUE'
+    );
+    const total = parseInt(countResult.rows[0].count);
+
+    res.json({
+      jobs: result.rows,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        pages: Math.ceil(total / limit)
+      }
+    });
+  } catch (error) {
+    logger.error('Get jobs error:', error);
+    res.status(500).json({ error: 'Failed to fetch jobs' });
+  }
+});
+
+/**
+ * GET /api/jobs/:id
+ * Get single job details
+ */
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const result = await query(
+      'SELECT * FROM job_listings WHERE id = $1',
+      [req.params.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    res.json({ job: result.rows[0] });
+  } catch (error) {
+    logger.error('Get job error:', error);
+    res.status(500).json({ error: 'Failed to fetch job' });
+  }
+});
+
 
 module.exports = router;

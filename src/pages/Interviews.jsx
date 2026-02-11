@@ -14,7 +14,7 @@ function Interviews() {
 
   const fetchInterviews = async () => {
     try {
-      const response = await api.get('/interviews');
+      const response = await api.get('/api/interviews');
       setInterviews(response.data.interviews || []);
     } catch (error) {
       console.error('Failed to fetch interviews:', error);

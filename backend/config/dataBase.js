@@ -1,34 +1,24 @@
 const { Pool } = require('pg');
-const logger = require('../utils/logger');
 
+// Create PostgreSQL connection pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 });
 
-// Log connection errors
-pool.on('error', (err) => {
-  logger.error('Unexpected database error:', err);
-});
-
-// Helper function to execute queries
+// Helper function for queries
 const query = async (text, params) => {
   const start = Date.now();
   try {
     const res = await pool.query(text, params);
     const duration = Date.now() - start;
-    
-    logger.debug('Executed query', { 
-      text: text.substring(0, 100), 
-      duration, 
-      rows: res.rowCount 
-    });
-    
+    console.log('Executed query', { text, duration, rows: res.rowCount });
     return res;
   } catch (error) {
-    logger.error('Query error:', { text, error: error.message });
+    console.error('Database query error:', error);
     throw error;
   }
 };
@@ -50,8 +40,18 @@ const transaction = async (callback) => {
   }
 };
 
+
+// Test connection on startup
+pool.on('connect', () => {
+  console.log('✅ Database connected');
+});
+
+pool.on('error', (err) => {
+  console.error('❌ Unexpected database error:', err);
+  process.exit(-1);
+});
+
 module.exports = {
   pool,
-  query,
-  transaction
+  query
 };

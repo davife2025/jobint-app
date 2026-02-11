@@ -20,30 +20,40 @@ const Dashboard = () => {
     loadDashboardData();
   }, []);
 
-  const loadDashboardData = async () => {
-    try {
-      const [statsRes, interviewsRes, matchesRes, appsRes, notifsRes] = await Promise.all([
-        applicationsAPI.getStats(),
-        interviewsAPI.getInterviews(),
-        jobsAPI.getPendingMatches(),
-        applicationsAPI.getApplications({ limit: 10 }),
-        notificationsAPI.getNotifications(true)
-      ]);
+ const loadDashboardData = async () => {
+  try {
+    setLoading(true);
+    
+    // Fix: Call APIs one by one to avoid rate limit
+    const statsRes = await applicationsAPI.getStats();
+    setStats(statsRes.data.summary);
 
-      setStats(statsRes.data.summary);
-      setInterviews(interviewsRes.data.interviews.filter(i => 
-        new Date(i.scheduled_at) > new Date()
-      ).slice(0, 3));
-      setPendingMatches(matchesRes.data.matches.slice(0, 5));
-      setRecentApplications(appsRes.data.applications);
-      setNotifications(notifsRes.data.notifications.slice(0, 5));
-    } catch (error) {
-      console.error('Failed to load dashboard:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const interviewsRes = await interviewsAPI.getInterviews();
+    setInterviews(interviewsRes.data.interviews.filter(i => 
+      new Date(i.scheduled_at) > new Date()
+    ).slice(0, 3));
 
+    const matchesRes = await jobsAPI.getPendingMatches();
+    setPendingMatches(matchesRes.data.matches.slice(0, 5));
+
+    const appsRes = await applicationsAPI.getApplications({ limit: 10 });
+    setRecentApplications(appsRes.data.applications || appsRes.data.items || []);
+
+    const notifsRes = await notificationsAPI.getNotifications(true);
+    setNotifications(notifsRes.data.notifications.slice(0, 5));
+
+  } catch (error) {
+    console.error('Failed to load dashboard:', error);
+    // Don't crash - show empty data
+    setStats({});
+    setInterviews([]);
+    setPendingMatches([]);
+    setRecentApplications([]);
+    setNotifications([]);
+  } finally {
+    setLoading(false);
+  }
+};
   const handleReviewMatch = async (matchId, approved) => {
     try {
       await jobsAPI.reviewMatch(matchId, approved);

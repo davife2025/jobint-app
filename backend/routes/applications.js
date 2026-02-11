@@ -6,6 +6,40 @@ const logger = require('../utils/logger');
 
 const router = express.Router();
 
+
+
+/**
+ * GET /api/applications/stats
+ * Get application statistics
+ */
+router.get('/stats/overview', auth, async (req, res) => {
+  try {
+    const stats = await applicationService.getApplicationStats(req.userId);
+    
+    // Get weekly trend
+    const trendResult = await query(
+      `SELECT 
+         DATE_TRUNC('week', applied_at) as week,
+         COUNT(*) as count
+       FROM applications
+       WHERE user_id = $1 
+       AND applied_at > NOW() - INTERVAL '8 weeks'
+       GROUP BY week
+       ORDER BY week DESC`,
+      [req.userId]
+    );
+
+    res.json({
+      summary: stats,
+      weeklyTrend: trendResult.rows
+    });
+  } catch (error) {
+    logger.error('Get application stats error:', error);
+    res.status(500).json({ error: 'Failed to fetch statistics' });
+  }
+});
+
+
 /**
  * GET /api/applications
  * Get user's applications
@@ -180,37 +214,6 @@ router.put('/:id/status', auth, async (req, res) => {
   } catch (error) {
     logger.error('Update status error:', error);
     res.status(500).json({ error: 'Failed to update status' });
-  }
-});
-
-/**
- * GET /api/applications/stats
- * Get application statistics
- */
-router.get('/stats/overview', auth, async (req, res) => {
-  try {
-    const stats = await applicationService.getApplicationStats(req.userId);
-    
-    // Get weekly trend
-    const trendResult = await query(
-      `SELECT 
-         DATE_TRUNC('week', applied_at) as week,
-         COUNT(*) as count
-       FROM applications
-       WHERE user_id = $1 
-       AND applied_at > NOW() - INTERVAL '8 weeks'
-       GROUP BY week
-       ORDER BY week DESC`,
-      [req.userId]
-    );
-
-    res.json({
-      summary: stats,
-      weeklyTrend: trendResult.rows
-    });
-  } catch (error) {
-    logger.error('Get application stats error:', error);
-    res.status(500).json({ error: 'Failed to fetch statistics' });
   }
 });
 

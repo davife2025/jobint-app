@@ -1,10 +1,11 @@
+// src/components/ProtectedRoute.jsx - UPDATED
+
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const ProtectedRoute = ({ children, allowGuest = false }) => {
-  const { isAuthenticated, loading } = useAuth();
-  const isGuestMode = localStorage.getItem('guestMode') === 'true';
+  const { isAuthenticated, isGuestMode, loading } = useAuth();
 
   if (loading) {
     return (

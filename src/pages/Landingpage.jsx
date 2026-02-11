@@ -1,7 +1,8 @@
+// src/pages/LandingPage.jsx - UPDATED WITH GUEST FLOW
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Briefcase, Calendar, Bot, Shield, Zap, TrendingUp, ArrowRight } from 'lucide-react';
-import '../styles/landing.css';
+import { Briefcase, Calendar, Bot, Shield, Zap, TrendingUp, ArrowRight, Rocket } from 'lucide-react';
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -85,26 +86,34 @@ function LandingPage() {
             Automate your entire job application process with AI. From discovering opportunities 
             to scheduling interviews, JobInt handles it all while you focus on preparation.
           </p>
-          <div className="flex gap-4 justify-center flex-wrap">
+          
+          {/* CTA Buttons */}
+          <div className="flex gap-4 justify-center flex-wrap mb-6">
+            <button
+              onClick={() => navigate('/guest-apply')}
+              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 font-medium text-lg shadow-lg flex items-center gap-2"
+            >
+              <Rocket className="w-5 h-5" />
+              Apply Now (No Signup)
+            </button>
             <button
               onClick={() => navigate('/register')}
-              className="px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-lg shadow-lg"
-            >
-              Start Free Trial
-            </button>
-            <button 
-              onClick={() => {
-                // Scroll to features section
-                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-              }}
               className="px-8 py-4 bg-white text-gray-700 rounded-lg hover:bg-gray-50 font-medium text-lg shadow-lg"
             >
-              Watch Demo
+              Create Free Account
             </button>
           </div>
-          <p className="text-sm text-gray-500 mt-4">
-            No credit card required • 14-day free trial • Cancel anytime
+          
+          <p className="text-sm text-gray-500">
+            🚀 <strong>Guest Mode:</strong> Apply to jobs instantly without creating an account • Track with a simple token
           </p>
+          
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-lg">
+            <Shield className="w-4 h-4 text-green-600" />
+            <span className="text-sm text-green-800">
+              <strong>New:</strong> Guest applications now verified on blockchain
+            </span>
+          </div>
         </div>
 
         {/* Stats */}
@@ -118,8 +127,116 @@ function LandingPage() {
         </div>
       </div>
 
+      {/* Guest vs Account Comparison */}
+      <div className="bg-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Choose Your Experience
+            </h2>
+            <p className="text-lg text-gray-600">
+              Start as a guest or create an account for full features
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Guest Mode */}
+            <div className="border-2 border-gray-200 rounded-xl p-8 hover:border-blue-300 transition-all">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <Rocket className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Guest Mode</h3>
+                <p className="text-gray-600">Perfect for quick applications</p>
+              </div>
+              
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Submit applications instantly</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Track with simple tokens</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">AI-generated cover letters</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Blockchain verification</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-400">Limited to 10 applications/day</span>
+                </li>
+              </ul>
+
+              <button
+                onClick={() => navigate('/guest-apply')}
+                className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+              >
+                Apply as Guest
+              </button>
+            </div>
+
+            {/* Full Account */}
+            <div className="border-2 border-indigo-500 rounded-xl p-8 bg-gradient-to-br from-indigo-50 to-purple-50 relative">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <span className="inline-block px-4 py-1 bg-indigo-600 text-white text-sm font-medium rounded-full">
+                  Recommended
+                </span>
+              </div>
+              
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-full mb-4">
+                  <Briefcase className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Full Account</h3>
+                <p className="text-gray-600">Maximum automation & features</p>
+              </div>
+              
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Everything in Guest Mode</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Unlimited applications</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Auto-matching job discovery</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Calendar integration</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Advanced analytics</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <ArrowRight className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Priority support</span>
+                </li>
+              </ul>
+
+              <button
+                onClick={() => navigate('/register')}
+                className="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium"
+              >
+                Create Free Account
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Features Section */}
-      <div id="features" className="bg-white py-20">
+      <div id="features" className="bg-gray-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -148,7 +265,7 @@ function LandingPage() {
       </div>
 
       {/* How It Works */}
-      <div className="py-20">
+      <div className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -165,10 +282,10 @@ function LandingPage() {
                 1
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Create Your Profile
+                Submit Your Application
               </h3>
               <p className="text-gray-600">
-                Tell us about your skills, experience, and job preferences. Upload your resume and we'll handle the rest.
+                Fill in job details and your information. No account needed - get started in seconds.
               </p>
             </div>
 
@@ -177,10 +294,10 @@ function LandingPage() {
                 2
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                AI Finds & Applies
+                AI Processes & Submits
               </h3>
               <p className="text-gray-600">
-                Our AI searches thousands of jobs, matches the best ones to your profile, and applies with personalized cover letters.
+                Our AI generates a personalized cover letter and submits your application with blockchain verification.
               </p>
             </div>
 
@@ -189,10 +306,10 @@ function LandingPage() {
                 3
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Get Interviews
+                Track & Get Interviews
               </h3>
               <p className="text-gray-600">
-                Receive interview invitations, auto-schedule them in your calendar, and track everything in your dashboard.
+                Use your tracking token to monitor status and receive interview invitations directly.
               </p>
             </div>
           </div>
@@ -208,15 +325,24 @@ function LandingPage() {
           <p className="text-xl text-blue-100 mb-8">
             Join thousands of job seekers who are landing interviews 10x faster with JobInt
           </p>
-          <button
-            onClick={() => navigate('/register')}
-            className="px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-gray-100 font-medium text-lg shadow-lg inline-flex items-center gap-2"
-          >
-            Start Your Free Trial
-            <ArrowRight className="w-5 h-5" />
-          </button>
+          <div className="flex gap-4 justify-center">
+            <button
+              onClick={() => navigate('/guest-apply')}
+              className="px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-gray-100 font-medium text-lg shadow-lg inline-flex items-center gap-2"
+            >
+              <Rocket className="w-5 h-5" />
+              Apply as Guest
+            </button>
+            <button
+              onClick={() => navigate('/register')}
+              className="px-8 py-4 bg-indigo-700 text-white rounded-lg hover:bg-indigo-800 font-medium text-lg shadow-lg inline-flex items-center gap-2"
+            >
+              Create Account
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
           <p className="text-blue-100 mt-4">
-            No credit card required • 14-day free trial • Cancel anytime
+            No credit card required • Start for free
           </p>
         </div>
       </div>

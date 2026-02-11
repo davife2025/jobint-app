@@ -1,7 +1,9 @@
+// src/pages/Login.jsx - UPDATED
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Briefcase, ArrowRight } from 'lucide-react';
+import { Briefcase, ArrowRight, Rocket } from 'lucide-react';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,8 +24,6 @@ const Login = () => {
       const result = await login(formData.email, formData.password);
       
       if (result.success) {
-        // Clear guest mode when logging in
-        localStorage.removeItem('guestMode');
         navigate('/dashboard');
       } else {
         setError(result.error);
@@ -43,10 +43,7 @@ const Login = () => {
   };
 
   const handleGuestAccess = () => {
-    // Set guest mode flag in localStorage
-    localStorage.setItem('guestMode', 'true');
-    // Navigate to dashboard as a guest
-    navigate('/dashboard');
+    navigate('/guest-apply');
   };
 
   return (
@@ -119,16 +116,16 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Continue without signing in button */}
+          {/* Guest mode button */}
           <button
             onClick={handleGuestAccess}
-            className="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 px-4 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg transition-colors flex items-center justify-center gap-2 border border-blue-200"
           >
-            Continue as Guest
-            <ArrowRight className="w-4 h-4" />
+            <Rocket className="w-4 h-4" />
+            Apply as Guest (No Signup)
           </button>
           <p className="text-xs text-gray-500 text-center mt-2">
-            Explore the platform with limited features
+            Submit applications instantly without creating an account
           </p>
 
           <div className="mt-6 text-center">

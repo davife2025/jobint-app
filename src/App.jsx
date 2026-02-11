@@ -1,3 +1,5 @@
+// src/App.jsx - UPDATED WITH GUEST ROUTES
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -10,7 +12,8 @@ import Dashboard from './pages/Dashboard';
 import Applications from './pages/Applications';
 import Interviews from './pages/Interviews';
 import Settings from './pages/Settings';
-import LandingPage from './pages/Landingpage';
+import LandingPage from './pages/LandingPage';
+import GuestApply from './pages/GuestApply';
 
 // Components
 import Navbar from './components/NavBar';
@@ -19,10 +22,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function AppRoutes() {
-  const { isAuthenticated, loading } = useAuth();
-  
-  // Check if user is in guest mode
-  const isGuestMode = localStorage.getItem('guestMode') === 'true';
+  const { isAuthenticated, isGuestMode, loading } = useAuth();
 
   if (loading) {
     return (
@@ -42,12 +42,17 @@ function AppRoutes() {
           <Route path="/" element={
             isAuthenticated ? <Navigate to="/dashboard" /> : <LandingPage />
           } />
+          
           <Route path="/login" element={
             isAuthenticated ? <Navigate to="/dashboard" /> : <Login />
           } />
+          
           <Route path="/register" element={
             isAuthenticated ? <Navigate to="/dashboard" /> : <Register />
           } />
+
+          {/* Guest application route - accessible to everyone */}
+          <Route path="/guest-apply" element={<GuestApply />} />
 
           {/* Protected routes - accessible by authenticated users OR guests */}
           <Route path="/dashboard" element={
@@ -55,11 +60,13 @@ function AppRoutes() {
               <Dashboard />
             </ProtectedRoute>
           } />
+          
           <Route path="/applications" element={
             <ProtectedRoute allowGuest={true}>
               <Applications />
             </ProtectedRoute>
           } />
+          
           <Route path="/interviews" element={
             <ProtectedRoute allowGuest={true}>
               <Interviews />

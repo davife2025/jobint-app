@@ -1,13 +1,11 @@
 const express = require('express');
 const auth = require('../middleware/auth');
 const { query } = require('../config/database');
-const calendarService = require('../services/calenderService');
-const blockchainService = require('../services/blockchainService');
 const logger = require('../utils/logger');
 
 const router = express.Router();
 
-// GET /api/interviews - Get user's interviews
+// GET /api/interviews
 router.get('/', auth, async (req, res) => {
   try {
     const result = await query(
@@ -19,7 +17,6 @@ router.get('/', auth, async (req, res) => {
        ORDER BY i.scheduled_at DESC`,
       [req.userId]
     );
-
     res.json({ interviews: result.rows });
   } catch (error) {
     logger.error('Get interviews error:', error);
@@ -27,77 +24,26 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// POST /api/interviews - Create interview
+// POST /api/interviews
 router.post('/', auth, async (req, res) => {
   try {
     const { applicationId, scheduledAt, duration, location, meetingLink } = req.body;
-
-    // Verify application belongs to user
-    const appResult = await query(
-      `SELECT a.*, jl.title, jl.company 
-       FROM applications a
-       JOIN job_listings jl ON a.job_listing_id = jl.id
-       WHERE a.id = $1 AND a.user_id = $2`,
-      [applicationId, req.userId]
-    );
-
-    if (appResult.rows.length === 0) {
-      return res.status(404).json({ error: 'Application not found' });
-    }
-
-    const app = appResult.rows[0];
-
-    // Create interview
-    const interviewResult = await query(
+    
+    const result = await query(
       `INSERT INTO interviews (application_id, scheduled_at, duration, location, meeting_link)
        VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
-      [applicationId, scheduledAt, duration, location, meetingLink]
+      [applicationId, scheduledAt, duration || 60, location, meetingLink]
     );
-
-    const interview = interviewResult.rows[0];
-
-    // Create calendar event
-    try {
-      const calEvent = await calendarService.createInterviewEvent(req.userId, {
-        jobTitle: app.title,
-        company: app.company,
-        scheduledAt,
-        duration,
-        location,
-        meetingLink
-      });
-
-      await query(
-        'UPDATE interviews SET calendar_event_id = $1 WHERE id = $2',
-        [calEvent.id, interview.id]
-      );
-    } catch (calError) {
-      logger.error('Calendar event creation failed:', calError);
-    }
-
-    // Record on blockchain
-    blockchainService.recordInterview(
-      req.userId,
-      applicationId,
-      scheduledAt,
-      app.company,
-      location || 'Remote'
-    ).then(result => {
-      query(
-        'UPDATE interviews SET blockchain_tx_hash = $1 WHERE id = $2',
-        [result.txHash, interview.id]
-      );
-    }).catch(err => logger.error('Blockchain recording failed:', err));
-
-    res.status(201).json({ interview });
+    
+    res.status(201).json({ interview: result.rows[0] });
   } catch (error) {
     logger.error('Create interview error:', error);
     res.status(500).json({ error: 'Failed to create interview' });
   }
 });
 
-// PUT /api/interviews/:id - Update interview
+// PUT /api/interviews/:id
 router.put('/:id', auth, async (req, res) => {
   try {
     const { scheduledAt, location, meetingLink, notes } = req.body;
@@ -128,7 +74,7 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
-// DELETE /api/interviews/:id - Cancel interview
+// DELETE /api/interviews/:id
 router.delete('/:id', auth, async (req, res) => {
   try {
     const result = await query(
@@ -138,21 +84,12 @@ router.delete('/:id', auth, async (req, res) => {
        WHERE i.application_id = a.id
        AND i.id = $1
        AND a.user_id = $2
-       RETURNING i.calendar_event_id`,
+       RETURNING i.*`,
       [req.params.id, req.userId]
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Interview not found' });
-    }
-
-    // Delete calendar event
-    if (result.rows[0].calendar_event_id) {
-      try {
-        await calendarService.deleteEvent(req.userId, result.rows[0].calendar_event_id);
-      } catch (err) {
-        logger.error('Calendar delete failed:', err);
-      }
     }
 
     res.json({ message: 'Interview cancelled' });
