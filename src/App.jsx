@@ -12,7 +12,7 @@ import Dashboard from './pages/Dashboard';
 import Applications from './pages/Applications';
 import Interviews from './pages/Interviews';
 import Settings from './pages/Settings';
-import LandingPage from './pages/LandingPage';
+import LandingPage from './pages/LandingPage.jsx';
 import GuestApply from './pages/GuestApply';
 
 // Components
